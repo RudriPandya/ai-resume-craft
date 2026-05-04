@@ -5,7 +5,7 @@ export async function exportResumeToPDF(elementId: string, fileName: string) {
   const el = document.getElementById(elementId);
   if (!el) throw new Error("Resume element not found");
 
-  const opt = {
+  const opt: any = {
     margin: 0,
     filename: fileName.endsWith(".pdf") ? fileName : `${fileName}.pdf`,
     image: { type: "jpeg", quality: 0.98 },
