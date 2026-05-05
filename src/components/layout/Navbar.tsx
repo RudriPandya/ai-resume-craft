@@ -14,6 +14,7 @@ export function Navbar() {
         </Link>
         <nav className="hidden items-center gap-7 text-sm md:flex">
           <Link to="/templates" className="text-muted-foreground transition-colors hover:text-foreground">Templates</Link>
+          <Link to="/tools" className="text-muted-foreground transition-colors hover:text-foreground">AI Tools</Link>
           <a href="/#how" className="text-muted-foreground transition-colors hover:text-foreground">How it works</a>
           <a href="/#faq" className="text-muted-foreground transition-colors hover:text-foreground">FAQ</a>
         </nav>
