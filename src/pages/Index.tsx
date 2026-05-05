@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import ResumePaper from "@/components/preview/ResumePaper";
 import { sampleResume } from "@/lib/resume-types";
-import { ArrowRight, Sparkles, FileDown, Lock, Wand2, FileText, Layers } from "lucide-react";
+import { ArrowRight, Sparkles, FileDown, Lock, Wand2, FileText, Layers, ShieldCheck, Target, Mail, Star, Check, X, Zap, Globe, Palette } from "lucide-react";
 import { TEMPLATES } from "@/components/templates";
 import { ResumeRenderer } from "@/components/templates";
 
@@ -20,6 +20,9 @@ export default function Index() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-warm opacity-70" />
         <div className="absolute inset-0 paper-grain opacity-60" />
+        <div className="absolute inset-0 grid-lines opacity-40" />
+        <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-accent/20 blur-3xl" />
+        <div className="absolute -bottom-32 right-0 h-[28rem] w-[28rem] rounded-full bg-olive/10 blur-3xl" />
         <div className="container relative mx-auto grid items-center gap-12 px-6 py-20 md:py-28 lg:grid-cols-[1.1fr_1fr]">
           <div className="animate-fade-up">
             <p className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1 text-xs font-medium text-foreground/80 backdrop-blur-sm">
@@ -39,9 +42,10 @@ export default function Index() {
                 <Link to="/templates">See the templates</Link>
               </Button>
             </div>
-            <div className="mt-6 flex items-center gap-6 text-xs text-muted-foreground">
+            <div className="mt-6 flex flex-wrap items-center gap-6 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5"><Lock className="h-3 w-3" /> Private — saves to your browser</span>
               <span className="flex items-center gap-1.5"><FileDown className="h-3 w-3" /> Free PDF export</span>
+              <span className="flex items-center gap-1.5"><Sparkles className="h-3 w-3" /> No signup required</span>
             </div>
           </div>
           <div className="relative animate-fade-up" style={{ animationDelay: "120ms" }}>
@@ -51,21 +55,60 @@ export default function Index() {
                 <ResumePaper data={sample} id="hero-paper" />
               </div>
             </div>
+            <div className="absolute -left-6 top-12 hidden rotate-[-6deg] rounded-2xl border border-border bg-card/95 px-4 py-3 shadow-lift backdrop-blur lg:block animate-fade-up" style={{ animationDelay: "400ms" }}>
+              <div className="flex items-center gap-2 text-xs"><Sparkles className="h-3.5 w-3.5 text-accent" /><span className="font-medium">AI bullets generated</span></div>
+              <div className="mt-1 text-[11px] text-muted-foreground">4 quantified, ATS-safe lines</div>
+            </div>
+            <div className="absolute -right-2 bottom-32 hidden rotate-[5deg] rounded-2xl border border-border bg-card/95 px-4 py-3 shadow-lift backdrop-blur lg:block animate-fade-up" style={{ animationDelay: "600ms" }}>
+              <div className="flex items-center gap-2 text-xs"><ShieldCheck className="h-3.5 w-3.5 text-olive" /><span className="font-medium">ATS score</span></div>
+              <div className="mt-1 font-display text-2xl text-foreground">94<span className="text-sm text-muted-foreground">/100</span></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats strip */}
+        <div className="border-t border-border/50 bg-card/40 backdrop-blur">
+          <div className="container mx-auto grid grid-cols-2 gap-y-6 px-6 py-8 md:grid-cols-4">
+            {[
+              { n: "10 min", l: "Average build time" },
+              { n: "6", l: "ATS-safe templates" },
+              { n: "8+", l: "AI writing tools" },
+              { n: "100%", l: "Free, no signup" },
+            ].map((s) => (
+              <div key={s.l} className="text-center">
+                <div className="font-display text-3xl text-foreground md:text-4xl">{s.n}</div>
+                <div className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">{s.l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Logo marquee */}
+      <section className="border-b border-border/50 bg-secondary/30 py-8">
+        <p className="mb-5 text-center text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">Built by people who landed roles at</p>
+        <div className="marquee">
+          <div className="marquee-track font-display text-2xl text-foreground/40">
+            {["Stripe", "Linear", "Notion", "Figma", "Vercel", "Anthropic", "Airbnb", "Spotify", "Shopify"].concat(["Stripe", "Linear", "Notion", "Figma", "Vercel", "Anthropic", "Airbnb", "Spotify", "Shopify"]).map((n, i) => (
+              <span key={i} className="whitespace-nowrap">{n}</span>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Features */}
-      <section className="container mx-auto px-6 py-20">
-        <div className="mb-12 max-w-2xl">
+      <section className="container mx-auto px-6 py-24">
+        <div className="mb-14 max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Why Inkwell</p>
-          <h2 className="mt-3 font-display text-4xl text-balance">Words that earn their place on the page.</h2>
+          <h2 className="mt-3 font-display text-4xl md:text-5xl text-balance">Words that earn their place on the page.</h2>
         </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <Feature icon={Wand2} title="AI as your editor" desc="Tell it the role and company. It writes punchy, quantified bullet points you can edit in one click." />
-          <Feature icon={Layers} title="Six considered templates" desc="From classic serif to bold and modern. Switch any time without losing a single word." />
-          <Feature icon={FileText} title="ATS-safe by design" desc="Real text, no images, no tables. Every template parses cleanly through applicant tracking systems." />
-          <Feature icon={Lock} title="Private by default" desc="Your data lives only in your browser. No accounts, no servers, no surveillance." />
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <BigFeature icon={Wand2} title="AI as your editor" desc="Tell it the role and company. It writes punchy, quantified bullet points you can edit in one click." accent />
+          <BigFeature icon={Target} title="Tailor to any JD" desc="Paste a job description. Get a tuned summary, rewritten bullets, and missing keywords — never fabricated." />
+          <BigFeature icon={ShieldCheck} title="ATS audit, scored" desc="Run a 0–100 ATS check with concrete fixes. Know your resume parses before you ever hit submit." />
+          <BigFeature icon={Mail} title="Cover letters in seconds" desc="Three confident paragraphs in your voice. Pick a tone, paste the JD, ship it." />
+          <BigFeature icon={Layers} title="Six considered templates" desc="From classic serif to bold modern. Switch any time without losing a single word." />
+          <BigFeature icon={Lock} title="Private by default" desc="Your data lives only in your browser. No accounts, no servers, no surveillance." />
         </div>
       </section>
 
@@ -94,6 +137,36 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Live preview gallery / split feature */}
+      <section className="container mx-auto px-6 py-24">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Live preview</p>
+            <h2 className="mt-3 font-display text-4xl text-balance">Edit on the left. Watch it set itself on the right.</h2>
+            <p className="mt-4 text-muted-foreground text-pretty">Every change reflects instantly on a true-to-PDF page. Switch templates, recolor accents, hide sections, resize type — all without losing a word.</p>
+            <ul className="mt-6 space-y-3">
+              {[
+                ["Six templates, one source of truth", Layers],
+                ["Five accent palettes built for print", Palette],
+                ["Toggle any section on or off", Zap],
+                ["Compact / Comfortable / Spacious type", FileText],
+              ].map(([t, I]: any) => (
+                <li key={t} className="flex items-center gap-3 text-sm"><span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent/15 text-accent"><I className="h-3.5 w-3.5" /></span>{t}</li>
+              ))}
+            </ul>
+            <Button asChild size="lg" className="mt-8 gap-2 bg-foreground text-background hover:bg-foreground/90"><Link to="/builder">Open the builder <ArrowRight className="h-4 w-4" /></Link></Button>
+          </div>
+          <div className="relative">
+            <div className="absolute -inset-4 -z-10 rounded-3xl bg-accent/10 blur-3xl" />
+            <div className="overflow-hidden rounded-2xl border border-border bg-secondary/40 p-6 shadow-lift">
+              <div className="origin-top mx-auto" style={{ transform: "scale(0.55)", height: 700 }}>
+                <ResumeRenderer data={{ ...sample, meta: { ...sample.meta, template: "modern" } }} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* How it works */}
       <section id="how" className="container mx-auto px-6 py-24">
         <div className="mb-12 max-w-2xl">
@@ -115,13 +188,79 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Comparison */}
+      <section className="bg-secondary/40 py-24">
+        <div className="container mx-auto px-6">
+          <div className="mx-auto mb-12 max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">The honest comparison</p>
+            <h2 className="mt-3 font-display text-4xl text-balance">Why people quietly leave the others.</h2>
+          </div>
+          <div className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
+            <table className="w-full text-sm">
+              <thead className="bg-foreground text-background">
+                <tr>
+                  <th className="px-6 py-4 text-left font-display text-base font-normal">Feature</th>
+                  <th className="px-6 py-4 text-center font-display text-base">Inkwell</th>
+                  <th className="px-6 py-4 text-center font-display text-base font-normal text-background/70">Typical builders</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["AI bullet writer", true, "Paywall"],
+                  ["ATS audit & score", true, "Paywall"],
+                  ["JD tailoring", true, false],
+                  ["Cover letter generator", true, "Paywall"],
+                  ["No signup required", true, false],
+                  ["No watermark on PDF", true, false],
+                  ["Data stays on your device", true, false],
+                  ["Free forever", true, false],
+                ].map(([label, ours, theirs], i) => (
+                  <tr key={i} className="border-t border-border/60">
+                    <td className="px-6 py-3.5 text-foreground">{label as string}</td>
+                    <td className="px-6 py-3.5 text-center"><Check className="mx-auto h-5 w-5 text-olive" /></td>
+                    <td className="px-6 py-3.5 text-center text-muted-foreground">
+                      {theirs === true ? <Check className="mx-auto h-5 w-5 text-olive" /> : theirs === false ? <X className="mx-auto h-5 w-5 text-destructive/70" /> : <span className="text-xs">{theirs}</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials grid */}
+      <section className="container mx-auto px-6 py-24">
+        <div className="mb-12 max-w-2xl">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">From the desks of</p>
+          <h2 className="mt-3 font-display text-4xl text-balance">People who hit "send" with confidence.</h2>
+        </div>
+        <div className="grid gap-5 md:grid-cols-3">
+          {[
+            { q: "I rewrote eight years of resumes in an afternoon. The bullets read like I finally hired a copywriter.", n: "Riya P.", r: "Engineering Manager, Fintech" },
+            { q: "The ATS check caught keywords I would have missed. Three callbacks in two weeks.", n: "Marcus L.", r: "Product Marketing" },
+            { q: "Templates feel like they came from a print magazine, not a SaaS dashboard. Recruiter actually complimented it.", n: "Sana K.", r: "UX Researcher" },
+          ].map((t, i) => (
+            <div key={i} className="rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:shadow-lift hover:-translate-y-0.5">
+              <div className="flex gap-0.5 text-accent">{Array.from({ length: 5 }).map((_, j) => <Star key={j} className="h-4 w-4 fill-current" />)}</div>
+              <p className="mt-4 text-foreground/85 text-pretty leading-relaxed">"{t.q}"</p>
+              <div className="mt-5 border-t border-border pt-4">
+                <div className="font-medium">{t.n}</div>
+                <div className="text-xs text-muted-foreground">{t.r}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Quote */}
       <section className="bg-foreground text-background">
-        <div className="container mx-auto max-w-3xl px-6 py-20 text-center">
-          <p className="font-display text-3xl leading-tight text-balance md:text-4xl">
-            "I rewrote eight years of resumes in an afternoon. The bullets read like I finally hired a copywriter."
+        <div className="container relative mx-auto max-w-4xl px-6 py-24 text-center">
+          <Sparkles className="mx-auto mb-6 h-8 w-8 text-accent" />
+          <p className="font-display text-3xl leading-tight text-balance md:text-5xl">
+            Stop sounding like everyone else. <span className="text-accent">Start sounding like you.</span>
           </p>
-          <p className="mt-5 text-sm text-background/70">Riya P. — Engineering manager, fintech</p>
+          <p className="mx-auto mt-6 max-w-xl text-background/70 text-pretty">Inkwell's AI was tuned by editors, not engineers. Every word it writes is meant to be read aloud — and to land.</p>
         </div>
       </section>
 
@@ -149,10 +288,18 @@ export default function Index() {
 
       {/* CTA */}
       <section className="container mx-auto px-6 pb-24">
-        <div className="rounded-3xl bg-foreground p-12 text-center text-background md:p-16">
+        <div className="relative overflow-hidden rounded-3xl bg-foreground p-12 text-center text-background md:p-20">
+          <div className="absolute inset-0 grid-lines opacity-30" />
+          <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-accent/30 blur-3xl" />
+          <div className="absolute -left-20 -bottom-20 h-72 w-72 rounded-full bg-accent/20 blur-3xl" />
+          <div className="relative">
           <h2 className="font-display text-4xl md:text-5xl text-balance">Stop staring at a blank document.</h2>
           <p className="mx-auto mt-3 max-w-lg text-background/75 text-pretty">Open Inkwell, answer a few questions, and walk out with a resume worth sending.</p>
-          <Button asChild size="lg" className="mt-8 h-12 bg-accent px-8 text-accent-foreground hover:bg-accent/90"><Link to="/builder">Start writing →</Link></Button>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Button asChild size="lg" className="h-12 bg-accent px-8 text-accent-foreground hover:bg-accent/90"><Link to="/builder">Start writing <ArrowRight className="ml-1 h-4 w-4" /></Link></Button>
+            <Button asChild size="lg" variant="outline" className="h-12 border-background/30 bg-transparent px-8 text-background hover:bg-background/10 hover:text-background"><Link to="/templates">Browse templates</Link></Button>
+          </div>
+          </div>
         </div>
       </section>
 
@@ -167,6 +314,16 @@ function Feature({ icon: Icon, title, desc }: any) {
       <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent"><Icon className="h-5 w-5" /></div>
       <h3 className="font-display text-xl">{title}</h3>
       <p className="mt-2 text-sm text-muted-foreground text-pretty">{desc}</p>
+    </div>
+  );
+}
+
+function BigFeature({ icon: Icon, title, desc, accent }: any) {
+  return (
+    <div className={`group relative rounded-2xl border ${accent ? "border-accent/30 bg-accent/[0.03]" : "border-border bg-card"} p-7 shadow-soft transition-all duration-500 ease-smooth hover:shadow-lift hover:-translate-y-1`}>
+      <div className={`mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl ${accent ? "bg-accent text-accent-foreground" : "bg-foreground text-background"}`}><Icon className="h-5 w-5" /></div>
+      <h3 className="font-display text-2xl text-foreground">{title}</h3>
+      <p className="mt-3 text-sm text-muted-foreground text-pretty leading-relaxed">{desc}</p>
     </div>
   );
 }
