@@ -130,6 +130,31 @@ All colors MUST be HSL.
     background: hsl(var(--paper));
     box-shadow: var(--shadow-paper);
   }
+  .grid-lines {
+    background-image:
+      linear-gradient(to right, hsl(var(--ink) / 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--ink) / 0.04) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  .glow-accent {
+    box-shadow: 0 0 0 1px hsl(var(--accent) / 0.3), 0 20px 60px -20px hsl(var(--accent) / 0.5);
+  }
+  .marquee {
+    display: flex;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 3rem;
+    animation: marquee 35s linear infinite;
+    flex-shrink: 0;
+    min-width: 100%;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+  }
 }
 
 /* Print styles for clean PDF export */
