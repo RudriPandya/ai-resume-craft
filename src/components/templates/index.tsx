@@ -5,6 +5,10 @@ import TemplateMinimal from "./TemplateMinimal";
 import TemplateBold from "./TemplateBold";
 import TemplateAcademic from "./TemplateAcademic";
 import TemplateCreative from "./TemplateCreative";
+import TemplateExecutive from "./TemplateExecutive";
+import TemplateCompact from "./TemplateCompact";
+import TemplateElegant from "./TemplateElegant";
+import TemplateTech from "./TemplateTech";
 
 export const TEMPLATES: { id: TemplateId; name: string; tagline: string }[] = [
   { id: "classic", name: "Classic", tagline: "Timeless serif. Best for finance, law, consulting." },
@@ -13,6 +17,10 @@ export const TEMPLATES: { id: TemplateId; name: string; tagline: string }[] = [
   { id: "bold", name: "Bold", tagline: "Strong header band. Marketing & sales." },
   { id: "academic", name: "Academic", tagline: "Detailed and structured. Research & PhDs." },
   { id: "creative", name: "Creative", tagline: "Asymmetric & expressive. Designers & makers." },
+  { id: "executive", name: "Executive", tagline: "Authoritative serif for senior leaders & C-suite." },
+  { id: "compact", name: "Compact", tagline: "One-page dense layout. Great for engineers." },
+  { id: "elegant", name: "Elegant", tagline: "Centered, refined, ceremonial. Academia & arts." },
+  { id: "tech", name: "Tech", tagline: "Monospace accents. Built for developers." },
 ];
 
 export function ResumeRenderer({ data }: { data: ResumeData }) {
@@ -22,6 +30,10 @@ export function ResumeRenderer({ data }: { data: ResumeData }) {
     case "bold": return <TemplateBold data={data} />;
     case "academic": return <TemplateAcademic data={data} />;
     case "creative": return <TemplateCreative data={data} />;
+    case "executive": return <TemplateExecutive data={data} />;
+    case "compact": return <TemplateCompact data={data} />;
+    case "elegant": return <TemplateElegant data={data} />;
+    case "tech": return <TemplateTech data={data} />;
     case "classic":
     default: return <TemplateClassic data={data} />;
   }
