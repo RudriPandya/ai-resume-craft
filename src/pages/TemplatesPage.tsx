@@ -7,6 +7,41 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useResumeStore } from "@/store/useResumeStore";
 import { ArrowRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+const PAGE_W = 794;
+const PAGE_H = 1123;
+
+function TemplateThumb({ data, onClick, label }: { data: any; onClick: () => void; label: string }) {
+  const ref = useRef<HTMLButtonElement>(null);
+  const [scale, setScale] = useState(0.36);
+  useEffect(() => {
+    if (!ref.current) return;
+    const el = ref.current;
+    const ro = new ResizeObserver(() => {
+      const w = el.clientWidth;
+      if (w > 0) setScale(w / PAGE_W);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  return (
+    <button
+      ref={ref}
+      onClick={onClick}
+      aria-label={label}
+      className="relative block w-full overflow-hidden rounded-xl border border-border bg-white shadow-soft transition-all duration-500 ease-smooth hover:shadow-lift hover:-translate-y-1"
+      style={{ height: PAGE_H * scale }}
+    >
+      <div
+        className="absolute left-0 top-0 origin-top-left"
+        style={{ width: PAGE_W, height: PAGE_H, transform: `scale(${scale})` }}
+      >
+        <ResumeRenderer data={data} />
+      </div>
+    </button>
+  );
+}
 
 export default function TemplatesPage() {
   const setTemplate = useResumeStore((s) => s.setTemplate);
@@ -14,12 +49,6 @@ export default function TemplatesPage() {
   const sample = sampleResume();
 
   const choose = (id: TemplateId) => { setTemplate(id); nav("/builder"); };
-
-  // A4 preview is 794 x 1123. We render at scale and clip to the scaled box
-  // so cards have no empty whitespace beside the preview.
-  const SCALE = 0.36;
-  const W = Math.round(794 * SCALE); // ~286
-  const H = Math.round(1123 * SCALE); // ~404
 
   return (
     <div className="min-h-screen bg-background">
@@ -35,25 +64,7 @@ export default function TemplatesPage() {
             const data = { ...sample, meta: { ...sample.meta, template: t.id } };
             return (
               <div key={t.id} className="group flex flex-col">
-                <button
-                  onClick={() => choose(t.id)}
-                  className="relative block overflow-hidden rounded-xl border border-border bg-secondary/40 shadow-soft transition-all duration-500 ease-smooth hover:shadow-lift hover:-translate-y-1"
-                  style={{ width: "100%", aspectRatio: `${W} / ${H}` }}
-                  aria-label={`Use ${t.name} template`}
-                >
-                  <div
-                    className="absolute left-0 top-0 origin-top-left bg-white"
-                    style={{
-                      width: 794,
-                      height: 1123,
-                      transform: `scale(${SCALE})`,
-                      // Width-fit: scale matches the card width visually because aspectRatio is locked.
-                    }}
-                  >
-                    <ResumeRenderer data={data} />
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                </button>
+                <TemplateThumb data={data} onClick={() => choose(t.id)} label={`Use ${t.name} template`} />
                 <div className="mt-4 flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <h3 className="font-display text-xl">{t.name}</h3>
