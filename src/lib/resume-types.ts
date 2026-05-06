@@ -1,4 +1,14 @@
-export type TemplateId = "classic" | "modern" | "minimal" | "bold" | "academic" | "creative";
+export type TemplateId =
+  | "classic"
+  | "modern"
+  | "minimal"
+  | "bold"
+  | "academic"
+  | "creative"
+  | "executive"
+  | "compact"
+  | "elegant"
+  | "tech";
 export type ColorScheme = "terracotta" | "ink" | "olive" | "navy" | "plum";
 export type FontSize = "sm" | "md" | "lg";
 
