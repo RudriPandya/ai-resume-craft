@@ -125,9 +125,15 @@ export default function Index() {
           <div className="grid gap-6 md:grid-cols-3">
             {TEMPLATES.slice(0, 3).map((t) => (
               <div key={t.id} className="group cursor-pointer">
-                <div className="overflow-hidden rounded-xl border border-border bg-background p-3 shadow-soft transition-all duration-500 ease-smooth group-hover:shadow-lift group-hover:-translate-y-1">
-                  <div className="origin-top mx-auto" style={{ transform: "scale(0.42)", height: 470, width: 794, marginLeft: "auto", marginRight: "auto" }}>
-                    <ResumeRenderer data={{ ...sample, meta: { ...sample.meta, template: t.id } }} />
+                <div className="overflow-hidden rounded-xl border border-border bg-background shadow-soft transition-all duration-500 ease-smooth group-hover:-translate-y-1 group-hover:shadow-lift">
+                  <div className="relative w-full" style={{ aspectRatio: 794 / 1123 }}>
+                    <div
+                      className="absolute left-1/2 top-0 origin-top"
+                      style={{ width: 794, height: 1123, transform: "translateX(-50%) scale(0.55)" }}
+                    >
+                      <ResumeRenderer data={{ ...sample, meta: { ...sample.meta, template: t.id } }} />
+                    </div>
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background via-background/90 to-transparent" />
                   </div>
                 </div>
                 <div className="mt-3"><div className="font-display text-xl">{t.name}</div><div className="text-sm text-muted-foreground">{t.tagline}</div></div>
