@@ -8,7 +8,9 @@ export type TemplateId =
   | "executive"
   | "compact"
   | "elegant"
-  | "tech";
+  | "tech"
+  | "onyx"
+  | "nordic";
 export type ColorScheme = "terracotta" | "ink" | "olive" | "navy" | "plum";
 export type FontSize = "sm" | "md" | "lg";
 

@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 
 const PAGE_W = 794;
 const PAGE_H = 1123;
+const THUMB_H = 980; // crop a little of the empty bottom so cards feel balanced
 
 function TemplateThumb({ data, onClick, label }: { data: any; onClick: () => void; label: string }) {
   const ref = useRef<HTMLButtonElement>(null);
@@ -31,7 +32,7 @@ function TemplateThumb({ data, onClick, label }: { data: any; onClick: () => voi
       onClick={onClick}
       aria-label={label}
       className="relative block w-full overflow-hidden rounded-xl border border-border bg-white shadow-soft transition-all duration-500 ease-smooth hover:shadow-lift hover:-translate-y-1"
-      style={{ height: PAGE_H * scale }}
+      style={{ height: THUMB_H * scale }}
     >
       <div
         className="absolute left-0 top-0 origin-top-left"
