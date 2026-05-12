@@ -16,12 +16,17 @@ const THUMB_H = 980; // crop a little of the empty bottom so cards feel balanced
 function TemplateThumb({ data, onClick, label }: { data: any; onClick: () => void; label: string }) {
   const ref = useRef<HTMLButtonElement>(null);
   const [scale, setScale] = useState(0.36);
+  const [offsetX, setOffsetX] = useState(0);
   useEffect(() => {
     if (!ref.current) return;
     const el = ref.current;
     const ro = new ResizeObserver(() => {
       const w = el.clientWidth;
-      if (w > 0) setScale(w / PAGE_W);
+      if (w > 0) {
+        const nextScale = w / PAGE_W;
+        setScale(nextScale);
+        setOffsetX((w - PAGE_W * nextScale) / 2);
+      }
     });
     ro.observe(el);
     return () => ro.disconnect();
@@ -31,12 +36,12 @@ function TemplateThumb({ data, onClick, label }: { data: any; onClick: () => voi
       ref={ref}
       onClick={onClick}
       aria-label={label}
-      className="relative block w-full overflow-hidden rounded-xl border border-border bg-white shadow-soft transition-all duration-500 ease-smooth hover:shadow-lift hover:-translate-y-1"
+      className="relative block w-full overflow-hidden rounded-xl border border-border bg-card shadow-soft transition-all duration-500 ease-smooth hover:-translate-y-1 hover:shadow-lift"
       style={{ height: THUMB_H * scale }}
     >
       <div
-        className="absolute left-0 top-0 origin-top-left"
-        style={{ width: PAGE_W, height: PAGE_H, transform: `scale(${scale})` }}
+        className="absolute top-0 origin-top-left"
+        style={{ width: PAGE_W, height: PAGE_H, left: offsetX, transform: `scale(${scale})` }}
       >
         <ResumeRenderer data={data} />
       </div>
@@ -60,7 +65,7 @@ export default function TemplatesPage() {
         <p className="mx-auto mt-3 max-w-xl text-muted-foreground text-pretty">Every template is ATS-tested and built on the same data — switch any time without losing your work.</p>
       </section>
       <section className="container mx-auto px-6 pb-20">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {TEMPLATES.map((t) => {
             const data = { ...sample, meta: { ...sample.meta, template: t.id } };
             return (
