@@ -7,43 +7,27 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useResumeStore } from "@/store/useResumeStore";
 import { ArrowRight } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 
 const PAGE_W = 794;
 const PAGE_H = 1123;
-const THUMB_H = 980; // crop a little of the empty bottom so cards feel balanced
+const PREVIEW_SCALE = 0.55;
+const THUMB_RATIO = PAGE_W / PAGE_H;
 
 function TemplateThumb({ data, onClick, label }: { data: any; onClick: () => void; label: string }) {
-  const ref = useRef<HTMLButtonElement>(null);
-  const [scale, setScale] = useState(0.36);
-  const [offsetX, setOffsetX] = useState(0);
-  useEffect(() => {
-    if (!ref.current) return;
-    const el = ref.current;
-    const ro = new ResizeObserver(() => {
-      const w = el.clientWidth;
-      if (w > 0) {
-        const nextScale = w / PAGE_W;
-        setScale(nextScale);
-        setOffsetX((w - PAGE_W * nextScale) / 2);
-      }
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
   return (
     <button
-      ref={ref}
       onClick={onClick}
       aria-label={label}
-      className="relative block w-full overflow-hidden rounded-xl border border-border bg-card shadow-soft transition-all duration-500 ease-smooth hover:-translate-y-1 hover:shadow-lift"
-      style={{ height: THUMB_H * scale }}
+      className="group relative block w-full overflow-hidden rounded-xl border border-border bg-card shadow-soft transition-all duration-500 ease-smooth hover:-translate-y-1 hover:shadow-lift"
     >
-      <div
-        className="absolute top-0 origin-top-left"
-        style={{ width: PAGE_W, height: PAGE_H, left: offsetX, transform: `scale(${scale})` }}
-      >
-        <ResumeRenderer data={data} />
+      <div className="relative w-full" style={{ aspectRatio: THUMB_RATIO }}>
+        <div
+          className="absolute left-1/2 top-0 origin-top"
+          style={{ width: PAGE_W, height: PAGE_H, transform: `translateX(-50%) scale(${PREVIEW_SCALE})` }}
+        >
+          <ResumeRenderer data={data} />
+        </div>
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card via-card/90 to-transparent" />
       </div>
     </button>
   );
@@ -61,7 +45,7 @@ export default function TemplatesPage() {
       <Navbar />
       <section className="container mx-auto px-6 pt-16 pb-10 text-center">
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Templates</p>
-        <h1 className="mt-3 font-display text-4xl md:text-5xl text-balance">Ten templates. One careful eye.</h1>
+        <h1 className="mt-3 font-display text-4xl md:text-5xl text-balance">A look for every kind of work.</h1>
         <p className="mx-auto mt-3 max-w-xl text-muted-foreground text-pretty">Every template is ATS-tested and built on the same data — switch any time without losing your work.</p>
       </section>
       <section className="container mx-auto px-6 pb-20">
