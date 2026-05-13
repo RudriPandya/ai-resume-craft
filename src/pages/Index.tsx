@@ -20,13 +20,18 @@ export default function Index() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-warm opacity-70" />
         <div className="absolute inset-0 paper-grain opacity-60" />
-        <div className="absolute inset-0 grid-lines opacity-40" />
-        <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-accent/20 blur-3xl" />
-        <div className="absolute -bottom-32 right-0 h-[28rem] w-[28rem] rounded-full bg-olive/10 blur-3xl" />
+        <div className="absolute inset-0 grid-lines opacity-30" />
+        <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-accent/25 blur-3xl animate-blob" />
+        <div className="absolute -bottom-32 right-0 h-[28rem] w-[28rem] rounded-full bg-olive/15 blur-3xl animate-blob-slow" />
+        <div className="absolute top-1/3 right-1/4 h-72 w-72 rounded-full bg-gold/15 blur-3xl animate-blob" style={{ animationDelay: "3s" }} />
         <div className="container relative mx-auto grid items-center gap-12 px-6 py-20 md:py-28 lg:grid-cols-[1.1fr_1fr]">
           <div className="animate-fade-up">
-            <p className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1 text-xs font-medium text-foreground/80 backdrop-blur-sm">
-              <Sparkles className="h-3 w-3 text-accent" /> AI that writes like a careful editor
+            <p className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1 text-xs font-medium text-foreground/80 backdrop-blur-sm shadow-soft">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
+              </span>
+              AI that writes like a careful editor
             </p>
             <h1 className="mt-5 font-display text-5xl leading-[1.05] tracking-tight text-balance md:text-6xl lg:text-7xl">
               The resume you've been <em className="text-accent not-italic font-display">meaning</em> to write.
@@ -35,10 +40,13 @@ export default function Index() {
               Inkwell pairs editorial-grade templates with an AI that writes the words for you. Beautiful, ATS-safe, and yours in ten minutes.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Button asChild size="lg" className="bg-foreground text-background hover:bg-foreground/90 gap-2 h-12 px-6">
-                <Link to="/builder">Build my resume <ArrowRight className="h-4 w-4" /></Link>
+              <Button asChild size="lg" className="group relative overflow-hidden bg-foreground text-background hover:bg-foreground/90 gap-2 h-12 px-6 shadow-lift">
+                <Link to="/builder">
+                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-background/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                  Build my resume <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="h-12 px-6">
+              <Button asChild variant="outline" size="lg" className="h-12 px-6 backdrop-blur bg-card/60">
                 <Link to="/templates">See the templates</Link>
               </Button>
             </div>
@@ -49,19 +57,27 @@ export default function Index() {
             </div>
           </div>
           <div className="relative animate-fade-up" style={{ animationDelay: "120ms" }}>
-            <div className="absolute -inset-6 -z-10 rounded-3xl bg-accent/10 blur-3xl" />
-            <div className="rotate-[1.5deg] origin-top-right transition-transform duration-700 ease-smooth hover:rotate-0">
+            <div className="absolute -inset-8 -z-10 rounded-[2.5rem] bg-gradient-to-tr from-accent/15 via-gold/10 to-olive/15 blur-3xl animate-blob-slow" />
+            <div className="origin-top-right animate-tilt transition-transform duration-700 ease-smooth hover:!rotate-0">
               <div className="origin-top mx-auto" style={{ transform: "scale(0.55)", marginBottom: -460 }}>
                 <ResumePaper data={sample} id="hero-paper" />
               </div>
             </div>
-            <div className="absolute -left-6 top-12 hidden rotate-[-6deg] rounded-2xl border border-border bg-card/95 px-4 py-3 shadow-lift backdrop-blur lg:block animate-fade-up" style={{ animationDelay: "400ms" }}>
+            <div className="absolute -left-6 top-12 hidden rotate-[-6deg] rounded-2xl border border-border bg-card/95 px-4 py-3 shadow-lift backdrop-blur lg:block animate-float" style={{ animationDelay: "400ms" }}>
               <div className="flex items-center gap-2 text-xs"><Sparkles className="h-3.5 w-3.5 text-accent" /><span className="font-medium">AI bullets generated</span></div>
               <div className="mt-1 text-[11px] text-muted-foreground">4 quantified, ATS-safe lines</div>
             </div>
-            <div className="absolute -right-2 bottom-32 hidden rotate-[5deg] rounded-2xl border border-border bg-card/95 px-4 py-3 shadow-lift backdrop-blur lg:block animate-fade-up" style={{ animationDelay: "600ms" }}>
+            <div className="absolute -right-2 bottom-32 hidden rotate-[5deg] rounded-2xl border border-border bg-card/95 px-4 py-3 shadow-lift backdrop-blur lg:block animate-float" style={{ animationDelay: "1.2s" }}>
               <div className="flex items-center gap-2 text-xs"><ShieldCheck className="h-3.5 w-3.5 text-olive" /><span className="font-medium">ATS score</span></div>
-              <div className="mt-1 font-display text-2xl text-foreground">94<span className="text-sm text-muted-foreground">/100</span></div>
+              <div className="mt-1 flex items-baseline gap-1">
+                <span className="font-display text-2xl text-foreground">94</span>
+                <span className="text-sm text-muted-foreground">/100</span>
+                <span className="ml-1 rounded-full bg-olive/15 px-1.5 py-0.5 text-[10px] font-semibold text-olive">PASS</span>
+              </div>
+            </div>
+            <div className="absolute right-2 top-2 hidden rotate-[3deg] rounded-2xl border border-border bg-foreground px-4 py-3 text-background shadow-lift xl:block animate-float" style={{ animationDelay: "0.6s" }}>
+              <div className="flex items-center gap-2 text-[11px]"><Globe className="h-3 w-3 text-accent" /><span className="font-medium">Tailored to JD</span></div>
+              <div className="mt-0.5 font-display text-xs text-background/80">Senior PM — Stripe</div>
             </div>
           </div>
         </div>

@@ -39,7 +39,15 @@ export default function BuilderPage() {
             <h1 className="font-display text-2xl text-foreground md:text-3xl">Compose your resume</h1>
             <p className="text-sm text-muted-foreground">Auto-saves to your browser as you type.</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
+            <div className="hidden items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1.5 text-xs shadow-soft backdrop-blur sm:flex">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-olive opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-olive" />
+              </span>
+              <span className="font-medium text-foreground">{completion}%</span>
+              <span className="text-muted-foreground">complete</span>
+            </div>
             {isEmpty && (
               <Button variant="outline" size="sm" onClick={() => loadSample(sampleResume())} className="gap-1.5"><Sparkles className="h-3.5 w-3.5" /> Try with sample data</Button>
             )}
