@@ -75,7 +75,7 @@ export default function Index() {
                 <span className="ml-1 rounded-full bg-olive/15 px-1.5 py-0.5 text-[10px] font-semibold text-olive">PASS</span>
               </div>
             </div>
-            <div className="absolute right-6 top-4 hidden rotate-[3deg] rounded-2xl border border-border bg-foreground px-4 py-3 text-background shadow-lift lg:block animate-float" style={{ animationDelay: "0.6s" }}>
+            <div className="absolute right-2 top-2 hidden rotate-[3deg] rounded-2xl border border-border bg-foreground px-4 py-3 text-background shadow-lift xl:block animate-float" style={{ animationDelay: "0.6s" }}>
               <div className="flex items-center gap-2 text-[11px]"><Globe className="h-3 w-3 text-accent" /><span className="font-medium">Tailored to JD</span></div>
               <div className="mt-0.5 font-display text-xs text-background/80">Senior PM — Stripe</div>
             </div>
