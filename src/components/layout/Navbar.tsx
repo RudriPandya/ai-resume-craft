@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Feather, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { InkwellMark } from "./InkwellLogo";
 
 export function Navbar() {
   const loc = useLocation();
@@ -35,7 +36,7 @@ export function Navbar() {
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
         <Link to="/" className="group flex items-center gap-2 text-foreground">
           <span className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-foreground text-background shadow-soft transition-transform group-hover:scale-105">
-            <Feather className="h-4 w-4 text-accent" />
+            <InkwellMark className="h-4 w-4 text-accent" />
           </span>
           <span className="font-display text-xl font-semibold tracking-tight">Inkwell</span>
         </Link>

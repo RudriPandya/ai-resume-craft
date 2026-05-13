@@ -32,10 +32,10 @@ Inkwell is a static, client-side resume builder that pairs six ATS-safe template
 | Styling | Tailwind CSS v3 + shadcn/ui + custom design tokens |
 | State | Zustand (with `persist` middleware → localStorage) |
 | Routing | React Router |
-| AI | Lovable AI Gateway (Gemini 2.5 Flash) via Supabase Edge Function |
+| AI | Google Gemini 2.5 Flash via Supabase Edge Function |
 | PDF | `html2pdf.js` (client-side) |
 | Type / Fonts | Fraunces (display) + Inter (body) |
-| Backend | Lovable Cloud (Supabase) — only used to host the AI proxy edge function |
+| Backend | Supabase — only used to host the AI proxy edge function |
 
 ## Getting started
 
@@ -50,7 +50,7 @@ bun run dev        # http://localhost:8080
 bun run build
 ```
 
-No `.env` setup is required for local development — the Supabase project URL and publishable key are auto-managed via Lovable Cloud and live in `.env`. AI calls go through the deployed edge function, which uses the `LOVABLE_API_KEY` configured on the cloud project.
+Create a `.env` file in the project root with your Supabase credentials and set `GEMINI_API_KEY` as a secret on your Supabase project. AI calls go through the deployed edge function, which uses the `GEMINI_API_KEY` configured in Supabase secrets.
 
 ## Project structure
 
@@ -82,7 +82,7 @@ supabase/functions/ai-resume/   Single edge function multiplexing all AI tasks
 
 ## How the AI works
 
-All AI requests go through a single edge function (`supabase/functions/ai-resume`) that proxies to the Lovable AI Gateway. The function exposes one POST endpoint and dispatches on `task`:
+All AI requests go through a single edge function (`supabase/functions/ai-resume`) that proxies to the Google Gemini API. The function exposes one POST endpoint and dispatches on `task`:
 
 | Task | Returns |
 |------|---------|

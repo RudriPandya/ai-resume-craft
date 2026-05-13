@@ -1,11 +1,12 @@
-// AI Resume helper — uses Lovable AI Gateway. Public function, no JWT required.
+// AI Resume helper — uses Google Gemini API. Public function, no JWT required.
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-const MODEL = "google/gemini-2.5-flash";
+const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
+const MODEL = "gemini-2.5-flash";
+const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
 
 type Task =
   | "bullets"
@@ -167,7 +168,7 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+    if (!GEMINI_API_KEY) throw new Error("GEMINI_API_KEY not configured");
 
     const { task, payload } = (await req.json()) as Body;
     if (!task || !payload) {
@@ -191,10 +192,10 @@ Deno.serve(async (req) => {
       body.tool_choice = { type: "function", function: { name: tool.name } };
     }
 
-    const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const resp = await fetch(GEMINI_ENDPOINT, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        Authorization: `Bearer ${GEMINI_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
@@ -205,15 +206,10 @@ Deno.serve(async (req) => {
         status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    if (resp.status === 402) {
-      return new Response(JSON.stringify({ error: "AI credits exhausted. Add credits in Workspace Settings → Usage." }), {
-        status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
     if (!resp.ok) {
       const t = await resp.text();
-      console.error("Gateway error", resp.status, t);
-      return new Response(JSON.stringify({ error: "AI gateway error" }), {
+      console.error("Gemini API error", resp.status, t);
+      return new Response(JSON.stringify({ error: "AI API error" }), {
         status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
