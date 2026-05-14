@@ -15,10 +15,17 @@ import { AIButton } from "@/components/AIButton";
 import { toast } from "sonner";
 import { ShieldCheck, Target, Mail, Database, Loader2, CheckCircle2, AlertTriangle, Upload, Download, Copy, Sparkles } from "lucide-react";
 import { emptyResume } from "@/lib/resume-types";
+import { useId } from "react";
+import { Seo } from "@/components/Seo";
 
 export default function ToolsPage() {
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="AI Resume Tools — ATS Audit, JD Match, Cover Letters | Inkwell"
+        description="Run an ATS audit, tailor your resume to a job description, generate a cover letter, and back up your data — all free, all private."
+        path="/tools"
+      />
       <Navbar />
       <section className="container mx-auto px-6 pt-14 pb-8 text-center">
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">AI tools</p>
@@ -65,12 +72,9 @@ function ATSPanel() {
 
   return (
     <Card>
-      <h3 className="font-display text-2xl">ATS compatibility check</h3>
+      <h2 className="font-display text-2xl">ATS compatibility check</h2>
       <p className="mt-1 text-sm text-muted-foreground">Score your resume against applicant tracking systems. Add a job description for keyword analysis.</p>
-      <div className="mt-5">
-        <Label className="text-xs uppercase tracking-wider text-muted-foreground">Job description (optional)</Label>
-        <Textarea value={jd} onChange={(e) => setJd(e.target.value)} rows={5} placeholder="Paste the job description for keyword analysis…" className="mt-1.5" />
-      </div>
+      <AtsJdField jd={jd} setJd={setJd} />
       <div className="mt-5 flex justify-end">
         <Button onClick={run} disabled={loading} className="gap-2 bg-foreground text-background hover:bg-foreground/90">
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShieldCheck className="h-4 w-4" />}
@@ -142,9 +146,9 @@ function JDMatchPanel() {
 
   return (
     <Card>
-      <h3 className="font-display text-2xl">Tailor to a job description</h3>
+      <h2 className="font-display text-2xl">Tailor to a job description</h2>
       <p className="mt-1 text-sm text-muted-foreground">Get a tuned summary and rewritten bullets — never fabricated.</p>
-      <Textarea value={jd} onChange={(e) => setJd(e.target.value)} rows={6} placeholder="Paste the full job description here…" className="mt-4" />
+      <JdMatchField jd={jd} setJd={setJd} />
       <div className="mt-4 flex justify-end">
         <Button onClick={run} disabled={loading} className="gap-2 bg-foreground text-background hover:bg-foreground/90">
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Target className="h-4 w-4" />}
@@ -200,28 +204,9 @@ function CoverLetterPanel() {
 
   return (
     <Card>
-      <h3 className="font-display text-2xl">Cover letter generator</h3>
+      <h2 className="font-display text-2xl">Cover letter generator</h2>
       <p className="mt-1 text-sm text-muted-foreground">Three confident paragraphs, in your voice.</p>
-      <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div><Label className="text-xs uppercase tracking-wider text-muted-foreground">Role</Label><Input value={role} onChange={(e) => setRole(e.target.value)} placeholder="Senior Product Designer" className="mt-1.5" /></div>
-        <div><Label className="text-xs uppercase tracking-wider text-muted-foreground">Company</Label><Input value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Acme Inc." className="mt-1.5" /></div>
-        <div className="md:col-span-2">
-          <Label className="text-xs uppercase tracking-wider text-muted-foreground">Tone</Label>
-          <Select value={tone} onValueChange={setTone}>
-            <SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Professional">Professional</SelectItem>
-              <SelectItem value="Warm">Warm & personable</SelectItem>
-              <SelectItem value="Confident">Confident & direct</SelectItem>
-              <SelectItem value="Enthusiastic">Enthusiastic</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="md:col-span-2">
-          <Label className="text-xs uppercase tracking-wider text-muted-foreground">Job description (optional)</Label>
-          <Textarea value={jd} onChange={(e) => setJd(e.target.value)} rows={4} placeholder="Paste the JD for sharper targeting…" className="mt-1.5" />
-        </div>
-      </div>
+      <CoverLetterFields role={role} setRole={setRole} company={company} setCompany={setCompany} tone={tone} setTone={setTone} jd={jd} setJd={setJd} />
       <div className="mt-5 flex justify-end">
         <Button onClick={run} disabled={loading} className="gap-2 bg-foreground text-background hover:bg-foreground/90">
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Mail className="h-4 w-4" />}
@@ -258,18 +243,18 @@ function DataPanel() {
 
   return (
     <Card>
-      <h3 className="font-display text-2xl">Your data</h3>
+      <h2 className="font-display text-2xl">Your data</h2>
       <p className="mt-1 text-sm text-muted-foreground">Back up, restore, or wipe your resume. Everything lives in your browser.</p>
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         <div className="rounded-xl border border-border p-5">
           <Download className="h-5 w-5 text-accent" />
-          <h4 className="mt-3 font-display text-lg">Export as JSON</h4>
+          <h3 className="mt-3 font-display text-lg">Export as JSON</h3>
           <p className="mt-1 text-sm text-muted-foreground">Save a complete backup you can re-import any time.</p>
           <Button size="sm" variant="outline" className="mt-4" onClick={() => downloadJSON(r, `Resume — ${r.personal.fullName || "draft"}`)}>Download backup</Button>
         </div>
         <div className="rounded-xl border border-border p-5">
           <Upload className="h-5 w-5 text-accent" />
-          <h4 className="mt-3 font-display text-lg">Import a backup</h4>
+          <h3 className="mt-3 font-display text-lg">Import a backup</h3>
           <p className="mt-1 text-sm text-muted-foreground">Restore a previous resume from a JSON file.</p>
           <label className="mt-4 inline-flex cursor-pointer items-center gap-2 rounded-md border border-input bg-background px-3 py-1.5 text-sm hover:bg-secondary">
             Choose file…
@@ -277,11 +262,60 @@ function DataPanel() {
           </label>
         </div>
         <div className="rounded-xl border border-dashed border-destructive/40 bg-destructive/5 p-5 sm:col-span-2">
-          <h4 className="font-display text-lg text-destructive">Danger zone</h4>
+          <h3 className="font-display text-lg text-destructive">Danger zone</h3>
           <p className="mt-1 text-sm text-muted-foreground">Permanently clear all resume data from this browser.</p>
           <Button size="sm" variant="outline" className="mt-4 border-destructive/40 text-destructive hover:bg-destructive/10" onClick={() => { if (confirm("Erase all data?")) { reset(); toast.success("Cleared."); } }}>Erase everything</Button>
         </div>
       </div>
     </Card>
+  );
+}
+
+function AtsJdField({ jd, setJd }: { jd: string; setJd: (v: string) => void }) {
+  const id = useId();
+  return (
+    <div className="mt-5">
+      <Label htmlFor={id} className="text-xs uppercase tracking-wider text-muted-foreground">Job description (optional)</Label>
+      <Textarea id={id} value={jd} onChange={(e) => setJd(e.target.value)} rows={5} placeholder="Paste the job description for keyword analysis…" className="mt-1.5" />
+    </div>
+  );
+}
+
+function JdMatchField({ jd, setJd }: { jd: string; setJd: (v: string) => void }) {
+  const id = useId();
+  return (
+    <>
+      <Label htmlFor={id} className="sr-only">Job description</Label>
+      <Textarea id={id} value={jd} onChange={(e) => setJd(e.target.value)} rows={6} placeholder="Paste the full job description here…" className="mt-4" />
+    </>
+  );
+}
+
+function CoverLetterFields({ role, setRole, company, setCompany, tone, setTone, jd, setJd }: { role: string; setRole: (v: string) => void; company: string; setCompany: (v: string) => void; tone: string; setTone: (v: string) => void; jd: string; setJd: (v: string) => void }) {
+  const roleId = useId();
+  const companyId = useId();
+  const toneId = useId();
+  const jdId = useId();
+  return (
+    <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div><Label htmlFor={roleId} className="text-xs uppercase tracking-wider text-muted-foreground">Role</Label><Input id={roleId} value={role} onChange={(e) => setRole(e.target.value)} placeholder="Senior Product Designer" className="mt-1.5" /></div>
+      <div><Label htmlFor={companyId} className="text-xs uppercase tracking-wider text-muted-foreground">Company</Label><Input id={companyId} value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Acme Inc." className="mt-1.5" /></div>
+      <div className="md:col-span-2">
+        <Label htmlFor={toneId} className="text-xs uppercase tracking-wider text-muted-foreground">Tone</Label>
+        <Select value={tone} onValueChange={setTone}>
+          <SelectTrigger id={toneId} className="mt-1.5"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Professional">Professional</SelectItem>
+            <SelectItem value="Warm">Warm & personable</SelectItem>
+            <SelectItem value="Confident">Confident & direct</SelectItem>
+            <SelectItem value="Enthusiastic">Enthusiastic</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="md:col-span-2">
+        <Label htmlFor={jdId} className="text-xs uppercase tracking-wider text-muted-foreground">Job description (optional)</Label>
+        <Textarea id={jdId} value={jd} onChange={(e) => setJd(e.target.value)} rows={4} placeholder="Paste the JD for sharper targeting…" className="mt-1.5" />
+      </div>
+    </div>
   );
 }

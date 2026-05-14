@@ -12,3 +12,5 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://resume-whisperer-240.lovable.app/sitemap.xml
