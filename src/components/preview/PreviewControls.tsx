@@ -67,7 +67,7 @@ export function PreviewControls() {
         <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Accent</div>
         <div className="flex gap-2">
           {COLORS.map((c) => (
-            <button key={c.id} onClick={() => setColor(c.id)} title={c.label}
+            <button key={c.id} onClick={() => setColor(c.id)} title={c.label} aria-label={`Use ${c.label} accent color`}
               className={`h-7 w-7 rounded-full border-2 transition-all ${r.meta.colorScheme === c.id ? "border-foreground scale-110" : "border-transparent"}`}
               style={{ background: c.hex }} />
           ))}
