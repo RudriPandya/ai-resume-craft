@@ -8,12 +8,35 @@ import { sampleResume } from "@/lib/resume-types";
 import { ArrowRight, Sparkles, FileDown, Lock, Wand2, FileText, Layers, ShieldCheck, Target, Mail, Star, Check, X, Zap, Globe, Palette } from "lucide-react";
 import { TEMPLATES } from "@/components/templates";
 import { ResumeRenderer } from "@/components/templates";
+import { Seo } from "@/components/Seo";
 
 const sample = sampleResume();
+
+const FAQ_ITEMS: [string, string][] = [
+  ["Is it really free?", "Yes — every template, the AI, and PDF export are free. No paywalls, no signup."],
+  ["Where is my data stored?", "Only in your browser's local storage. Closing the tab won't lose it; clearing browser data will."],
+  ["Will my resume pass ATS filters?", "Every template uses real text only — no tables, images, or text-in-shapes. They're built to be parsed cleanly."],
+  ["What does the AI actually do?", "It writes draft bullet points, summaries, project descriptions, and skill suggestions based on the details you give it. You edit anything, any time."],
+  ["Can I export to Word?", "PDF only for now. PDFs are the standard for ATS systems and look identical everywhere."],
+];
 
 export default function Index() {
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Inkwell — AI Resume Builder for Modern Careers"
+        description="Craft a beautifully written, ATS-friendly resume in under 10 minutes. AI writes the words, you bring the story. Free, no signup."
+        path="/"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: FAQ_ITEMS.map(([q, a]) => ({
+            "@type": "Question",
+            name: q,
+            acceptedAnswer: { "@type": "Answer", text: a },
+          })),
+        }}
+      />
       <Navbar />
 
       {/* Hero */}
@@ -293,13 +316,7 @@ export default function Index() {
           <h2 className="mt-3 font-display text-4xl">Honest answers.</h2>
         </div>
         <Accordion type="single" collapsible className="max-w-3xl">
-          {[
-            ["Is it really free?", "Yes — every template, the AI, and PDF export are free. No paywalls, no signup."],
-            ["Where is my data stored?", "Only in your browser's local storage. Closing the tab won't lose it; clearing browser data will."],
-            ["Will my resume pass ATS filters?", "Every template uses real text only — no tables, images, or text-in-shapes. They're built to be parsed cleanly."],
-            ["What does the AI actually do?", "It writes draft bullet points, summaries, project descriptions, and skill suggestions based on the details you give it. You edit anything, any time."],
-            ["Can I export to Word?", "PDF only for now. PDFs are the standard for ATS systems and look identical everywhere."],
-          ].map(([q, a], i) => (
+          {FAQ_ITEMS.map(([q, a], i) => (
             <AccordionItem key={i} value={`q${i}`}>
               <AccordionTrigger className="text-left font-medium">{q}</AccordionTrigger>
               <AccordionContent className="text-muted-foreground">{a}</AccordionContent>
