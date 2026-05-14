@@ -1,0 +1,10 @@
+# Inkwell
+
+> Free, private AI resume builder. Editorial-grade templates, ATS-safe output, no signup required.
+
+## Pages
+
+- [Home](/): Product overview, features, and FAQ.
+- [Builder](/builder): Step-by-step resume composer with live preview and PDF export.
+- [Templates](/templates): Gallery of ATS-tested resume designs across Classic, Modern, Creative, Technical, and Academic categories.
+- [Tools](/tools): ATS audit, job-description tailoring, cover letter generator, and JSON import/export.
