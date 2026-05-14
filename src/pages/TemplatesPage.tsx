@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useResumeStore } from "@/store/useResumeStore";
 import { ArrowRight, Eye, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Seo } from "@/components/Seo";
 
 const PAGE_W = 794;
 const PAGE_H = 1123;
@@ -57,6 +58,18 @@ export default function TemplatesPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Resume Templates — Inkwell"
+        description="Browse hand-crafted, ATS-tested resume templates across Classic, Modern, Creative, Technical, and Academic styles. Free, switchable any time."
+        path="/templates"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Resume Templates",
+          url: "https://resume-whisperer-240.lovable.app/templates",
+          hasPart: TEMPLATES.map((t) => ({ "@type": "CreativeWork", name: t.name, description: t.tagline })),
+        }}
+      />
       <Navbar />
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-warm opacity-60" />
@@ -112,7 +125,7 @@ export default function TemplatesPage() {
                 <div className="mt-4 flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <h3 className="font-display text-xl leading-tight">{t.name}</h3>
+                      <h2 className="font-display text-xl leading-tight">{t.name}</h2>
                       <span className="rounded-full border border-border bg-secondary/60 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">{t.category}</span>
                     </div>
                     <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{t.tagline}</p>

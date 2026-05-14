@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useId, cloneElement, isValidElement, ReactElement } from "react";
 import { useResumeStore } from "@/store/useResumeStore";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,10 +12,14 @@ import { callAI } from "@/lib/ai-client";
 import { toast } from "sonner";
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  const id = useId();
+  const child = isValidElement(children)
+    ? cloneElement(children as ReactElement<any>, { id: (children as ReactElement<any>).props.id ?? id })
+    : children;
   return (
     <div className="space-y-1.5">
-      <Label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</Label>
-      {children}
+      <Label htmlFor={id} className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</Label>
+      {child}
     </div>
   );
 }
@@ -62,7 +66,7 @@ export function StepExperience() {
         <div key={e.id} className="rounded-lg border border-border bg-card p-5 shadow-soft">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2 text-muted-foreground"><GripVertical className="h-4 w-4" /><span className="text-xs uppercase tracking-wider">Role</span></div>
-            <Button variant="ghost" size="sm" onClick={() => removeExperience(e.id)} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></Button>
+            <Button variant="ghost" size="sm" aria-label="Remove this role" onClick={() => removeExperience(e.id)} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></Button>
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <Field label="Role"><Input value={e.role} onChange={(ev) => updateExperience(e.id, { role: ev.target.value })} placeholder="Senior Product Designer" /></Field>
@@ -83,7 +87,7 @@ export function StepExperience() {
               {e.bullets.map((b, i) => (
                 <div key={i} className="flex gap-2">
                   <Textarea value={b} onChange={(ev) => { const nb = [...e.bullets]; nb[i] = ev.target.value; setExperienceBullets(e.id, nb); }} rows={2} placeholder="Led the redesign that lifted weekly active users by 38%." />
-                  <Button variant="ghost" size="icon" onClick={() => setExperienceBullets(e.id, e.bullets.filter((_, j) => j !== i))} className="shrink-0 text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></Button>
+                  <Button variant="ghost" size="icon" aria-label="Remove bullet" onClick={() => setExperienceBullets(e.id, e.bullets.filter((_, j) => j !== i))} className="shrink-0 text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></Button>
                 </div>
               ))}
               <Button type="button" variant="outline" size="sm" onClick={() => setExperienceBullets(e.id, [...e.bullets, ""])} className="gap-1.5"><Plus className="h-3.5 w-3.5" /> Add bullet</Button>
@@ -116,7 +120,7 @@ export function StepEducation() {
         <div key={e.id} className="rounded-lg border border-border bg-card p-5 shadow-soft">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs uppercase tracking-wider text-muted-foreground">Education</span>
-            <Button variant="ghost" size="sm" onClick={() => removeEducation(e.id)} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></Button>
+            <Button variant="ghost" size="sm" aria-label="Remove this education entry" onClick={() => removeEducation(e.id)} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></Button>
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <Field label="Institution"><Input value={e.institution} onChange={(ev) => updateEducation(e.id, { institution: ev.target.value })} placeholder="Rhode Island School of Design" /></Field>
@@ -189,7 +193,7 @@ export function StepProjects() {
         <div key={p.id} className="rounded-lg border border-border bg-card p-5 shadow-soft">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs uppercase tracking-wider text-muted-foreground">Project</span>
-            <Button variant="ghost" size="sm" onClick={() => removeProject(p.id)} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></Button>
+            <Button variant="ghost" size="sm" aria-label="Remove this project" onClick={() => removeProject(p.id)} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></Button>
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <Field label="Project name"><Input value={p.name} onChange={(e) => updateProject(p.id, { name: e.target.value })} placeholder="Inkwell type studies" /></Field>
@@ -208,7 +212,7 @@ export function StepProjects() {
             {p.bullets.map((b, i) => (
               <div key={i} className="flex gap-2">
                 <Textarea value={b} onChange={(e) => { const nb = [...p.bullets]; nb[i] = e.target.value; updateProject(p.id, { bullets: nb }); }} rows={1} placeholder="Grew to 7,400 subscribers in 9 months." />
-                <Button variant="ghost" size="icon" onClick={() => updateProject(p.id, { bullets: p.bullets.filter((_, j) => j !== i) })} className="shrink-0 text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" aria-label="Remove highlight" onClick={() => updateProject(p.id, { bullets: p.bullets.filter((_, j) => j !== i) })} className="shrink-0 text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></Button>
               </div>
             ))}
             <Button type="button" variant="outline" size="sm" onClick={() => updateProject(p.id, { bullets: [...p.bullets, ""] })} className="gap-1.5"><Plus className="h-3.5 w-3.5" /> Add highlight</Button>
