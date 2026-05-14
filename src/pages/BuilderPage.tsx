@@ -9,6 +9,7 @@ import { useResumeStore, completenessScore } from "@/store/useResumeStore";
 import { sampleResume } from "@/lib/resume-types";
 import { ChevronLeft, ChevronRight, Sparkles, FileText } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Seo } from "@/components/Seo";
 
 export default function BuilderPage() {
   const [step, setStep] = useState(0);
@@ -32,6 +33,11 @@ export default function BuilderPage() {
 
   return (
     <div className="min-h-screen bg-background paper-grain">
+      <Seo
+        title="Resume Builder — Inkwell"
+        description="Compose your resume step by step with live preview, AI writing help, and instant PDF export. Auto-saves to your browser."
+        path="/builder"
+      />
       <Navbar />
       <div className="container mx-auto px-4 py-6 md:px-6">
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
